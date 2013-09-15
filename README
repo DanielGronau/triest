@@ -1,1 +1,7 @@
-This file was created by IntelliJ IDEA (Leda) IU-129.1237 for binding GitHub repository
+Triest is Tetris reversed: You "cut out" Tetris pieces from a growing pile of blocks.
+
+The game is controlled by mouse:
+
+- the left mouse button "cuts out" a tetris piece from the top of the stack
+- the right button turns your piece
+- the middle button drops some random blocks, which helps you if you have no way to remove your actual piece
