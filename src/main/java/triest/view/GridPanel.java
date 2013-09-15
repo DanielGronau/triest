@@ -78,7 +78,7 @@ public class GridPanel extends JPanel implements View {
     }
 
     public boolean newGame() {
-        return JOptionPane.showConfirmDialog(this, "Play again?","Game Over!",JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION;
+        return JOptionPane.showConfirmDialog(this, "Play again?","Game Over!",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
     @Override
