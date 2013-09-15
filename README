@@ -4,4 +4,4 @@ The game is controlled by mouse:
 
 - the left mouse button "cuts out" a tetris piece from the top of the stack
 - the right button turns your piece
-- the middle button drops some random blocks, which helps you if you have no way to remove your actual piece
+- the middle button drops some random blocks, which helps you if you have no way to remove your current piece
