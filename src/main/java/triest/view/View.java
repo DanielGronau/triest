@@ -13,5 +13,4 @@ public interface View {
 
     public Grid getGrid();
 
-    public void reset();
 }

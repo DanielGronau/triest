@@ -2,6 +2,7 @@ package triest.view;
 
 import triest.model.Grid;
 import triest.model.Piece;
+import triest.model.Pos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,15 +14,12 @@ public class GridPanel extends JPanel implements View {
     private final static int BLOCK_SIZE = 30;
 
     private final Dimension size;
-    private final Color blockFromColor = new Color(200, 200, 255);
-    private final Color blockToColor = new Color(120, 120, 255);
-    private final Color pieceColor = new Color(255, 120, 120, 150);
-    private final Color hudColor = new Color(220,220, 150, 150);
+    private final Color pieceColor = new Color(80, 80, 255, 150);
+    private final Color hudColor = new Color(220, 220, 150, 150);
     private final Font hudFont = new Font("Monospaced", Font.BOLD, 20);
 
     private final Grid grid;
     private Piece piece;
-    private int pieceCount = 0;
     private int posX = 0;
     private int posY = 0;
 
@@ -47,7 +45,6 @@ public class GridPanel extends JPanel implements View {
                     grid.panic();
                 } else if (SwingUtilities.isLeftMouseButton(e) && grid.remove(posX, posY, piece)) {
                     piece = new Piece();
-                    pieceCount++;
                 }
             }
         });
@@ -87,50 +84,56 @@ public class GridPanel extends JPanel implements View {
     }
 
     @Override
-    public void reset() {
-        grid.reset();
-        pieceCount = 0;
-    }
-
-    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        drawGrid(g2);
+        drawBlocks(g2);
         drawPiece(g2);
+        drawGrid(g2);
         drawHud(g2);
     }
 
-    private void drawGrid(Graphics2D g2) {
-        g2.setBackground(Color.LIGHT_GRAY);
+    private void drawBlocks(Graphics2D g2) {
         g2.fillRect(0, 0, size.width, size.height);
-        for (int x = 0; x < grid.width; x++) {
-            for (int y = 0; y < grid.height; y++) {
+        for (int y = 0; y < grid.height; y++) {
+            double f = (double) y / grid.height;
+            int green = (int) (120 + f * (240 - 120));
+            int red = (int) (120 + (1-f) * (240 - 120));
+            Color blockColor = new Color(red, green, 100);
+            for (int x = 0; x < grid.width; x++) {
                 if (grid.get(x, y)) {
                     g2.setPaint(new GradientPaint(
-                            x * BLOCK_SIZE, y * BLOCK_SIZE, blockFromColor,
-                            (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE, blockToColor)
+                            x * BLOCK_SIZE, y * BLOCK_SIZE, blockColor,
+                            (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE, blockColor.darker())
                     );
                     g2.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     g2.setPaint(null);
                 }
-                g2.setColor(Color.DARK_GRAY);
-                g2.drawRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
             }
         }
     }
 
     private void drawPiece(Graphics2D g2) {
         if (piece == null) return;
+        Pos center = piece.getCenter();
         for (int x = 0; x < piece.getWidth(); x++) {
             for (int y = 0; y < piece.getHeight(); y++) {
                 if (piece.get(x, y)) {
-                    int cx = x + posX - piece.getCenterX();
-                    int cy = y + posY - piece.getCenterY();
+                    int cx = x + posX - center.x;
+                    int cy = y + posY - center.y;
                     g2.setColor(pieceColor);
-                    g2.fillRect(cx * BLOCK_SIZE + 1, cy * BLOCK_SIZE + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+                    g2.fillRect(cx * BLOCK_SIZE, cy * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                 }
+            }
+        }
+    }
+
+    private void drawGrid(Graphics2D g2) {
+        for (int y = 0; y < grid.height; y++) {
+            for (int x = 0; x < grid.width; x++) {
+                g2.setColor(Color.DARK_GRAY);
+                g2.drawRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
             }
         }
     }
@@ -139,6 +142,6 @@ public class GridPanel extends JPanel implements View {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setFont(hudFont);
         g2.setColor(hudColor);
-        g2.drawString(String.format("%05d Pieces",pieceCount), 10, 20);
+        g2.drawString(String.format("%05d pieces, %03d lines",grid.getPieceCount(), grid.getLineCount()), 10, 20);
     }
 }

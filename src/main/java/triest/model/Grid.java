@@ -9,7 +9,9 @@ public class Grid {
     private final boolean[][] grid;
     private final Random random = new Random();
 
+    private int lineCount = 0;
 
+    private int pieceCount = 0;
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;
@@ -26,6 +28,7 @@ public class Grid {
             System.arraycopy(grid[y + 1], 0, grid[y], 0, width);
         }
         Arrays.fill(grid[height - 1], true); //fill lowest line with blocks
+        lineCount++;
         return true;
     }
 
@@ -39,8 +42,9 @@ public class Grid {
 
     //tries to remove the piece from the given Position
     public boolean remove(int x, int y, Piece piece) {
-        int cx = x - piece.getCenterX();
-        int cy = y - piece.getCenterY();
+        Pos center = piece.getCenter();
+        int cx = x - center.x;
+        int cy = y - center.y;
         if (cx < 0 || cy < 0 || cx + piece.getWidth() > width || cy + piece.getHeight() > height) {
             return false; //not completely inside grid
         }
@@ -67,6 +71,7 @@ public class Grid {
                 }
             }
         }
+        pieceCount ++;
         return true;
     }
 
@@ -87,5 +92,15 @@ public class Grid {
         for(boolean[] row : grid) {
             Arrays.fill(row, false);
         }
+        lineCount = 0;
+        pieceCount = 0;
+    }
+
+    public int getLineCount() {
+        return lineCount;
+    }
+
+    public int getPieceCount() {
+        return pieceCount;
     }
 }

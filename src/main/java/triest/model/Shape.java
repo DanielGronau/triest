@@ -13,13 +13,25 @@ public enum Shape {
 
     private static final Random random = new Random();
 
-    boolean[][] shape;
+    private boolean[][] shape;
 
-    Shape(boolean[][] shape) {
+    private Shape(boolean[][] shape) {
        this.shape = shape;
     }
 
     public static Shape getRandom() {
         return values()[random.nextInt(values().length)];
+    }
+
+    public boolean get(int x, int y) {
+        return shape[y][x];
+    }
+
+    public int getWidth() {
+        return shape[0].length;
+    }
+
+    public int getHeight() {
+        return shape.length;
     }
 }
