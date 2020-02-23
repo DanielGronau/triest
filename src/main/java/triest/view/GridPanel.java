@@ -23,7 +23,7 @@ public class GridPanel extends JPanel implements View {
     private int posX = 0;
     private int posY = 0;
 
-    public GridPanel(final Grid grid) {
+    GridPanel(final Grid grid) {
         this.grid = grid;
         this.size = new Dimension(grid.width * BLOCK_SIZE, grid.height * BLOCK_SIZE);
         this.addMouseMotionListener(new MouseMotionAdapter() {
@@ -75,10 +75,9 @@ public class GridPanel extends JPanel implements View {
     }
 
     public boolean newGame() {
-        return JOptionPane.showConfirmDialog(this, "Play again?","Game Over!",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        return JOptionPane.showConfirmDialog(this, "Play again?", "Game Over!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
-    @Override
     public Grid getGrid() {
         return grid;
     }
@@ -99,13 +98,13 @@ public class GridPanel extends JPanel implements View {
         for (int y = 0; y < grid.height; y++) {
             double f = (double) y / grid.height;
             int green = (int) (120 + f * (240 - 120));
-            int red = (int) (120 + (1-f) * (240 - 120));
+            int red = (int) (120 + (1 - f) * (240 - 120));
             Color blockColor = new Color(red, green, 100);
             for (int x = 0; x < grid.width; x++) {
                 if (grid.get(x, y)) {
                     g2.setPaint(new GradientPaint(
-                            x * BLOCK_SIZE, y * BLOCK_SIZE, blockColor,
-                            (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE, blockColor.darker())
+                        x * BLOCK_SIZE, y * BLOCK_SIZE, blockColor,
+                        (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE, blockColor.darker())
                     );
                     g2.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     g2.setPaint(null);
@@ -142,6 +141,6 @@ public class GridPanel extends JPanel implements View {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setFont(hudFont);
         g2.setColor(hudColor);
-        g2.drawString(String.format("%05d pieces, %03d lines",grid.getPieceCount(), grid.getLineCount()), 10, 20);
+        g2.drawString(String.format("%05d pieces, %03d lines", grid.getPieceCount(), grid.getLineCount()), 10, 20);
     }
 }

@@ -5,12 +5,12 @@ import triest.model.Piece;
 
 public interface View {
 
-    public void repaint();
+    void repaint();
 
-    public void setPiece(Piece piece);
+    void setPiece(Piece piece);
 
-    public boolean newGame();
+    boolean newGame();
 
-    public Grid getGrid();
+    Grid getGrid();
 
 }

@@ -15,7 +15,7 @@ public enum Shape {
 
     private boolean[][] shape;
 
-    private Shape(boolean[][] shape) {
+    Shape(boolean[][] shape) {
        this.shape = shape;
     }
 

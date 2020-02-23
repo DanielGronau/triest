@@ -10,18 +10,15 @@ public class Gui {
     //returns the component that needs to be repainted
     public View getView(Grid grid) {
         final GridPanel gridPanel = new GridPanel(grid);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JFrame frame = new JFrame("Triest");
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.setLayout(new GridLayout(1, 1));
-                frame.add(gridPanel);
-                frame.setResizable(false);
-                frame.pack();
-                centerOnScreen(frame);
-                frame.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Triest");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setLayout(new GridLayout(1, 1));
+            frame.add(gridPanel);
+            frame.setResizable(false);
+            frame.pack();
+            centerOnScreen(frame);
+            frame.setVisible(true);
         });
         return gridPanel;
     }
